@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willi ArVi Music - Artista Musical Oficial</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-crown"></i>
+                <span>WILLI ARVI MUSIC</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#inicio" class="nav-link">Inicio</a>
+                <a href="#musica" class="nav-link">Música</a>
+                <a href="#videos" class="nav-link">Videos</a>
+                <a href="#eventos" class="nav-link">Eventos</a>
+                <a href="#galeria" class="nav-link">Galería</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+                <a href="#tienda" class="nav-link">Tienda</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-word">WILLI</span>
+                    <span class="title-word gold">ARVI</span>
+                    <span class="title-word">MUSIC</span>
+                </h1>
+                <p class="hero-subtitle">Artista, compositor y productor musical. Creando experiencias únicas a través del arte sonoro</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToSection('musica')">
+                        <i class="fas fa-play"></i> Escuchar Ahora
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('eventos')">
+                        <i class="fas fa-calendar-alt"></i> Ver Eventos
+                    </button>
+                </div>
+                <div class="social-icons-hero">
+                    <a href="https://instagram.com/williarvi" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/williarvimusic" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://youtube.com/@williarvimusic" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://tiktok.com/@williarvi" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://spotify.com/artist/williarvi" target="_blank"><i class="fab fa-spotify"></i></a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="artist-photo">
+                    <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Willi ArVi - Artista Musical">
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Music Section -->
+    <section id="musica" class="music-section">
+        <div class="container">
+            <h2 class="section-title">MI MÚSICA</h2>
+            
+            <!-- Music Player -->
+            <div class="music-player">
+                <div class="player-main">
+                    <div class="album-art">
+                        <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Álbum Cover" id="currentAlbumArt">
+                        <div class="vinyl-overlay"></div>
+                    </div>
+                    <div class="player-info">
+                        <h3 id="currentTrack">Mi Canción Nueva</h3>
+                        <p id="currentAlbum">Willi ArVi - Single 2024</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="time-display">
+                                <span id="currentTime">0:00</span>
+                                <span id="totalTime">3:45</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-controls">
+                    <button class="control-btn" id="shuffleBtn">
+                        <i class="fas fa-random"></i>
+                    </button>
+                    <button class="control-btn" id="prevBtn">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="control-btn main-control" id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="nextBtn">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button class="control-btn" id="repeatBtn">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+
+                <!-- Playlist -->
+                <div class="playlist-section">
+                    <h4>MI DISCOGRAFÍA</h4>
+                    <div class="playlist" id="playlist">
+                        <div class="track-item playing" onclick="switchTrack(0)">
+                            <div class="track-number">1</div>
+                            <div class="track-details">
+                                <h5>Mi Canción Nueva</h5>
+                                <p>Willi ArVi - Single 2024</p>
+                            </div>
+                            <div class="track-duration">3:45</div>
+                        </div>
+                        <div class="track-item" onclick="switchTrack(1)">
+                            <div class="track-number">2</div>
+                            <div class="track-details">
+                                <h5>Sueños Urbanos</h5>
+                                <p>Willi ArVi - EP 2023</p>
+                            </div>
+                            <div class="track-duration">4:20</div>
+                        </div>
+                        <div class="track-item" onclick="switchTrack(2)">
+                            <div class="track-number">3</div>
+                            <div class="track-details">
+                                <h5>Bajo las Estrellas</h5>
+                                <p>Willi ArVi - EP 2023</p>
+                            </div>
+                            <div class="track-duration">3:55</div>
+                        </div>
+                        <div class="track-item" onclick="switchTrack(3)">
+                            <div class="track-number">4</div>
+                            <div class="track-details">
+                                <h5>Ritmo en la Ciudad</h5>
+                                <p>Willi ArVi - Single 2022</p>
+                            </div>
+                            <div class="track-duration">4:10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streaming Platforms -->
+            <div class="platforms">
+                <a href="https://open.spotify.com/artist/TU_ID" class="platform-btn" target="_blank">
+                    <i class="fab fa-spotify"></i>
+                    <span>Spotify</span>
+                </a>
+                <a href="https://music.apple.com/artist/TU_ID" class="platform-btn" target="_blank">
+                    <i class="fab fa-apple"></i>
+                    <span>Apple Music</span>
+                </a>
+                <a href="https://www.youtube.com/@williarvimusic" class="platform-btn" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube Music</span>
+                </a>
+                <a href="https://soundcloud.com/williarvi" class="platform-btn" target="_blank">
+                    <i class="fab fa-soundcloud"></i>
+                    <span>SoundCloud</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="videos-section">
+        <div class="container">
+            <h2 class="section-title">VIDEOS MUSICALES</h2>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=225&fit=crop" alt="Video Musical">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Mi Canción Nueva - Video Oficial</h3>
+                        <p>Video musical oficial del último single</p>
+                        <span class="video-views">245K vistas</span>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=225&fit=crop" alt="En Vivo">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Concierto en Vivo 2023</h3>
+                        <p>Presentación completa en el Teatro Metropolitano</p>
+                        <span class="video-views">189K vistas</span>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=225&fit=crop" alt="Detrás de Cámaras">
+                        <div class="play-overlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Detrás de Cámaras</h3>
+                        <p>Making of del último video musical</p>
+                        <span class="video-views">156K vistas</span>
+                    </div>
+                </div>
+            </div>
+            <div class="video-button">
+                <a href="https://youtube.com/@williarvimusic" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-youtube"></i> Ver más en YouTube
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="eventos" class="events-section">
+        <div class="container">
+            <h2 class="section-title">PRÓXIMOS EVENTOS</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="date-day">15</span>
+                        <span class="date-month">MAR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Concierto Acústico</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Teatro Metropolitano, Medellín</p>
+                        <p class="event-desc">Una noche íntima con versiones acústicas de mis canciones más populares.</p>
+                        <div class="event-tags">
+                            <span class="tag">Acústico</span>
+                            <span class="tag">Intimo</span>
+                        </div>
+                    </div>
+                    <button class="event-btn" onclick="openBookingForm()">RESERVAR</button>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="date-day">22</span>
+                        <span class="date-month">ABR</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Festival de Música Urbana</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Plaza Mayor, Bogotá</p>
+                        <p class="event-desc">Participación especial en el festival más importante de música urbana del año.</p>
+                        <div class="event-tags">
+                            <span class="tag">Festival</span>
+                            <span class="tag">Urbano</span>
+                        </div>
+                    </div>
+                    <button class="event-btn" onclick="openBookingForm()">RESERVAR</button>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="date-day">10</span>
+                        <span class="date-month">MAY</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Show Privado</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Evento Privado - Cartagena</p>
+                        <p class="event-desc">Presentación exclusiva para evento corporativo con repertorio personalizado.</p>
+                        <div class="event-tags">
+                            <span class="tag">Privado</span>
+                            <span class="tag">Corporativo</span>
+                        </div>
+                    </div>
+                    <button class="event-btn" onclick="openBookingForm()">RESERVAR</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">GALERÍA</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=500&fit=crop" alt="Willi ArVi en concierto">
+                    <div class="gallery-overlay">
+                        <h4>Concierto en Vivo</h4>
+                        <p>Teatro Metropolitano</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=500&fit=crop" alt="Sesión de estudio">
+                    <div class="gallery-overlay">
+                        <h4>Sesión de Estudio</h4>
+                        <p>Grabando nuevo material</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=500&fit=crop" alt="Ensayos">
+                    <div class="gallery-overlay">
+                        <h4>Ensayo con la Banda</h4>
+                        <p>Preparando nuevo show</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Section -->
+    <section id="tienda" class="store-section">
+        <div class="container">
+            <h2 class="section-title">TIENDA OFICIAL</h2>
+            <div class="store-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop" alt="Playera Oficial">
+                    </div>
+                    <div class="product-info">
+                        <h3>Playera Oficial</h3>
+                        <p>Playera con logo oficial de Willi ArVi</p>
+                        <span class="product-price">$35.000</span>
+                        <button class="product-btn">COMPRAR</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop" alt="CD Físico">
+                    </div>
+                    <div class="product-info">
+                        <h3>CD Físico</h3>
+                        <p>Edición limitada firmada</p>
+                        <span class="product-price">$45.000</span>
+                        <button class="product-btn">COMPRAR</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=400&fit=crop" alt="Poster">
+                    </div>
+                    <div class="product-info">
+                        <h3>Poster Autografiado</h3>
+                        <p>Poster 60x90 cm firmado</p>
+                        <span class="product-price">$25.000</span>
+                        <button class="product-btn">COMPRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">CONTACTO PROFESIONAL</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contrata para tu Evento</h3>
+                    <p>¿Interesado en contratarme para tu evento? Completa el formulario y me pondré en contacto contigo para coordinar todos los detalles.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+57 301 495 1799</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contacto@williarvi.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Medellín, Colombia</span>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://instagram.com/williarvi" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://facebook.com/williarvimusic" class="social-link" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://tiktok.com/@williarvi" class="social-link" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://spotify.com/artist/williarvi" class="social-link" target="_blank"><i class="fab fa-spotify"></i></a>
+                        <a href="https://youtube.com/@williarvimusic" class="social-link" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" placeholder="Nombre Completo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Correo Electrónico" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="tel" placeholder="Teléfono de Contacto" required>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Tipo de Evento</option>
+                                <option value="concierto">Concierto</option>
+                                <option value="festival">Festival</option>
+                                <option value="corporativo">Evento Corporativo</option>
+                                <option value="privado">Fiesta Privada</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="number" placeholder="Cantidad de Personas" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" placeholder="Duración (minutos)" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Tipo de Sonido</option>
+                                <option value="completo">Sonido Completo</option>
+                                <option value="basico">Sonido Básico</option>
+                                <option value="propio">Traeré mi Sonido</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Tipo de Tarima</option>
+                                <option value="elevada">Tarima Elevada</option>
+                                <option value="suelo">Nivel del Suelo</option>
+                                <option value="portatil">Tarima Portátil</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea placeholder="Mensaje Adicional (requerimientos especiales, fecha tentativa, etc.)" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-crown"></i>
+                    <span>WILLI ARVI MUSIC</span>
+                </div>
+                <p class="footer-text">Creando experiencias únicas a través de la música</p>
+                <p class="footer-copy">&copy; 2024 Willi ArVi Music. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audioElement" preload="metadata"></audio>
+
+    <!-- Scripts -->
+    <script src="js/particles.js"></script>
+    <script src="js/audio-player.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
