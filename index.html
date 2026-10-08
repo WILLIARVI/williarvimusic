@@ -11,10 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Particles Background -->
+
+    <!-- ============================================================
+         FONDO ANIMADO (LUCES DE CONCIERTO)
+         ============================================================ -->
     <div id="particles-js"></div>
 
-    <!-- Navigation -->
+
+    <!-- ============================================================
+         NAVEGACIÓN
+         ============================================================ -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#inicio" class="nav-logo">
@@ -40,7 +46,10 @@
         </div>
     </nav>
 
-    <!-- ============ HERO ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: HERO (INICIO)
+         ============================================================ -->
     <section id="inicio" class="hero">
         <div class="hero-container">
             <div class="hero-content">
@@ -75,14 +84,18 @@
         <div class="scroll-down"><div class="scroll-arrow"></div></div>
     </section>
 
-    <!-- ============ LIBRO ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: LIBRO "EL ECO DE LO ETERNO"
+         ============================================================ -->
     <section id="libro" class="book-section">
         <div class="container">
             <h2 class="section-title">EL ECO DE LO ETERNO</h2>
 
+            <!-- --- Portada del libro + info --- -->
             <div class="book-hero">
                 <div class="book-cover">
-                    <img src="assets/libro/portada.jpg" alt="Portada El Eco De Lo Eterno">
+                    <img src="assets/libro/portada.jpg" alt="Portada El Eco De Lo Eterno" class="zoomable">
                 </div>
                 <div class="book-info">
                     <h3>El Eco De Lo Eterno</h3>
@@ -91,6 +104,7 @@
                         Una obra que te conecta con lo eterno. Descubre la historia que Willi ArVi escribió para inspirarte cada día. Este libro es un viaje íntimo por las reflexiones, historias y aprendizajes que dieron forma a su música y a su vida.
                     </p>
 
+                    <!-- --- Formatos y precios --- -->
                     <div class="book-formats">
                         <div class="format-card">
                             <span class="format-name">PDF Digital</span>
@@ -106,10 +120,12 @@
                         </div>
                     </div>
 
+                    <!-- --- Botón de compra --- -->
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSc25RVMU3kOOta4PH4qimfaBBAY_-6aD7QwM2DOtw90Yuw3qw/viewform" target="_blank" class="btn btn-primary btn-buy">
                         <i class="fas fa-shopping-cart"></i> Comprar el Libro
                     </a>
 
+                    <!-- --- Plataformas donde conseguir el libro --- -->
                     <div class="book-platforms">
                         <p class="platforms-label">También disponible en:</p>
                         <div class="platforms-grid">
@@ -126,7 +142,7 @@
                 </div>
             </div>
 
-            <!-- Reseñas -->
+            <!-- --- Carrusel de reseñas de lectores --- -->
             <div class="reviews-section">
                 <div class="reviews-header">
                     <h3>Lo que dicen los lectores</h3>
@@ -150,11 +166,15 @@
         </div>
     </section>
 
-    <!-- ============ MÚSICA ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: MÚSICA
+         ============================================================ -->
     <section id="musica" class="music-section">
         <div class="container">
             <h2 class="section-title">MI MÚSICA</h2>
 
+            <!-- --- Reproductor de audio --- -->
             <div class="music-player">
                 <div class="player-main">
                     <div class="album-art">
@@ -175,6 +195,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- --- Controles del reproductor --- -->
                 <div class="player-controls">
                     <button class="control-btn" id="shuffleBtn"><i class="fas fa-random"></i></button>
                     <button class="control-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
@@ -182,12 +204,15 @@
                     <button class="control-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
                     <button class="control-btn" id="repeatBtn"><i class="fas fa-redo"></i></button>
                 </div>
+
+                <!-- --- Lista de reproducción --- -->
                 <div class="playlist-section">
                     <h4>MI DISCOGRAFÍA</h4>
                     <div class="playlist" id="playlist"></div>
                 </div>
             </div>
 
+            <!-- --- Plataformas de streaming --- -->
             <div class="platforms">
                 <a href="#" target="_blank" class="platform-btn">
                     <i class="fab fa-spotify"></i><span>Spotify</span>
@@ -203,7 +228,7 @@
                 </a>
             </div>
 
-            <!-- Apoyos -->
+            <!-- --- Apoyos financieros (PayPal + QR Nu) --- -->
             <div class="support-section">
                 <h3 class="support-title">Apoya mi trabajo artístico</h3>
                 <p class="support-text">
@@ -213,7 +238,7 @@
                     <div class="support-card">
                         <h4><i class="fab fa-paypal"></i> PayPal</h4>
                         <p>Apoya desde cualquier parte del mundo.</p>
-                        <img src="assets/qr/paypal.png" alt="QR PayPal" class="support-qr" onerror="this.style.display='none'">
+                        <img src="assets/qr/paypal.png" alt="QR PayPal" class="support-qr zoomable" onerror="this.style.display='none'">
                         <a href="#" target="_blank" class="btn btn-primary">
                             Ir a PayPal
                         </a>
@@ -221,15 +246,18 @@
                     <div class="support-card">
                         <h4><i class="fas fa-university"></i> Cuenta Nu</h4>
                         <p>Transferencia local desde Colombia.</p>
-                        <img src="assets/qr/nu.png" alt="QR Nu" class="support-qr" onerror="this.style.display='none'">
-                        <p class="support-note">Escanea el QR desde tu app bancaria.</p>
+                        <img src="assets/qr/nu.png" alt="QR Nu" class="support-qr zoomable" onerror="this.style.display='none'">
+                        <p class="support-note">Toca el QR para ampliarlo y escanearlo.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============ PODCAST ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: PODCAST "EL ECO DE LO ETERNO"
+         ============================================================ -->
     <section id="podcast" class="podcast-section">
         <div class="container">
             <h2 class="section-title">PODCAST: EL ECO DE LO ETERNO</h2>
@@ -240,16 +268,23 @@
         </div>
     </section>
 
-    <!-- ============ VIDEOS ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: VIDEOS (con pestañas por categoría)
+         ============================================================ -->
     <section id="videos" class="videos-section">
         <div class="container">
             <h2 class="section-title">VIDEOS</h2>
+
+            <!-- --- Pestañas --- -->
             <div class="videos-tabs">
                 <button class="video-tab active" data-tab="nuevaCancion"><i class="fas fa-music"></i> Nueva Canción</button>
                 <button class="video-tab" data-tab="conciertos"><i class="fas fa-microphone"></i> Conciertos</button>
                 <button class="video-tab" data-tab="conferencias"><i class="fas fa-chalkboard-teacher"></i> Conferencias</button>
                 <button class="video-tab" data-tab="backstage"><i class="fas fa-video"></i> Detrás de Cámaras</button>
             </div>
+
+            <!-- --- Contenedor del video (playlist de YouTube) --- -->
             <div class="video-embed-wrapper" id="videoEmbedWrapper">
                 <div class="video-empty">
                     <i class="fas fa-play-circle"></i>
@@ -262,14 +297,18 @@
         </div>
     </section>
 
-    <!-- ============ EVENTOS ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: EVENTOS (Conciertos / Conferencias / Comunidad)
+         ============================================================ -->
     <section id="eventos" class="events-section">
         <div class="container">
             <h2 class="section-title">EVENTOS</h2>
 
+            <!-- --- Bloque 1: Conciertos --- -->
             <div class="event-block">
                 <div class="event-block-image">
-                    <img src="assets/eventos/conciertos.jpg" alt="Conciertos Willi ArVi">
+                    <img src="assets/eventos/conciertos.jpg" alt="Conciertos Willi ArVi" class="zoomable">
                 </div>
                 <div class="event-block-content">
                     <h3><i class="fas fa-music"></i> Conciertos</h3>
@@ -285,9 +324,10 @@
                 </div>
             </div>
 
+            <!-- --- Bloque 2: Conferencias (invertido) --- -->
             <div class="event-block reverse">
                 <div class="event-block-image">
-                    <img src="assets/eventos/conferencias.jpg" alt="Conferencias Willi ArVi">
+                    <img src="assets/eventos/conferencias.jpg" alt="Conferencias Willi ArVi" class="zoomable">
                 </div>
                 <div class="event-block-content">
                     <h3><i class="fas fa-chalkboard-teacher"></i> Conferencias</h3>
@@ -303,9 +343,10 @@
                 </div>
             </div>
 
+            <!-- --- Bloque 3: Comunidad --- -->
             <div class="event-block">
                 <div class="event-block-image">
-                    <img src="assets/eventos/comunidad.jpg" alt="Comunidad Willi ArVi">
+                    <img src="assets/eventos/comunidad.jpg" alt="Comunidad Willi ArVi" class="zoomable">
                 </div>
                 <div class="event-block-content">
                     <h3><i class="fas fa-users"></i> Encuentros con la Comunidad</h3>
@@ -323,11 +364,18 @@
         </div>
     </section>
 
-    <!-- ============ GALERÍA ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: GALERÍA (carrusel automático desde GitHub)
+         ============================================================ -->
     <section id="galeria" class="gallery-section">
         <div class="container">
             <h2 class="section-title">GALERÍA</h2>
+
+            <!-- --- Pestañas de álbumes (se llenan desde gallery.js) --- -->
             <div class="gallery-album-tabs" id="galleryTabs"></div>
+
+            <!-- --- Carrusel de fotos --- -->
             <div class="gallery-carousel-wrapper">
                 <button class="carousel-btn carousel-prev" id="galleryPrev" aria-label="Anterior">
                     <i class="fas fa-chevron-left"></i>
@@ -342,7 +390,11 @@
         </div>
     </section>
 
-    <!-- ============ TIENDA ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: TIENDA OFICIAL
+         (los productos se cargan desde config.js con script.js)
+         ============================================================ -->
     <section id="tienda" class="store-section">
         <div class="container">
             <h2 class="section-title">TIENDA OFICIAL</h2>
@@ -351,11 +403,16 @@
         </div>
     </section>
 
-    <!-- ============ CONTACTO ============ -->
+
+    <!-- ============================================================
+         SECCIÓN: CONTACTO
+         ============================================================ -->
     <section id="contacto" class="contact-section">
         <div class="container">
             <h2 class="section-title">CONTACTO</h2>
             <div class="contact-grid">
+
+                <!-- --- Bloque izquierdo: invitación a contrataciones --- -->
                 <div class="contact-info">
                     <h3>¿Quieres contratarme para tu evento?</h3>
                     <p>Completa el formulario de contrataciones y me pondré en contacto contigo para coordinar todos los detalles de tu evento.</p>
@@ -364,6 +421,7 @@
                     </a>
                 </div>
 
+                <!-- --- Bloque derecho: WhatsApp + ubicación + redes --- -->
                 <div class="contact-details-box">
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
@@ -384,7 +442,10 @@
         </div>
     </section>
 
-    <!-- ============ FOOTER ============ -->
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -398,13 +459,30 @@
         </div>
     </footer>
 
-    <!-- Audio Element -->
+
+    <!-- ============================================================
+         LIGHTBOX (visor de imágenes a pantalla completa)
+         ============================================================ -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
+
+    <!-- ============================================================
+         ELEMENTO DE AUDIO (controlado por audio-player.js)
+         ============================================================ -->
     <audio id="audioElement" preload="metadata"></audio>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- ============================================================
+         SCRIPTS (orden importante: config primero, script al final)
+         ============================================================ -->
     <script src="js/config.js"></script>
-    <script src="js/particles.js"></script>
+    <script src="js/lights.js"></script>
     <script src="js/audio-player.js"></script>
     <script src="js/gallery.js"></script>
     <script src="js/reviews.js"></script>
