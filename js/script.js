@@ -1,0 +1,201 @@
+// ==========================================================
+// SCRIPT PRINCIPAL - Willi ArVi Music
+// ==========================================================
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    navMenu.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => navMenu.classList.remove('active'));
+    });
+  }
+
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.style.background = window.scrollY > 50
+        ? 'rgba(0,0,0,0.98)'
+        : 'rgba(0,0,0,0.9)';
+    });
+  }
+
+  renderStore();
+  renderPodcast();
+  renderVideos();
+});
+
+// ==========================================================
+// TIENDA
+// ==========================================================
+function renderStore() {
+  const grid = document.getElementById('storeGrid');
+  if (!grid || !CONFIG.productos) return;
+
+  const formUrl = CONFIG.forms.compras;
+
+  grid.innerHTML = CONFIG.productos.map(p => {
+    const fotos = [];
+    for (let i = 1; i <= (p.fotos || 3); i++) {
+      fotos.push(`assets/productos/${p.slug}/${i}.jpg`);
+    }
+
+    return `
+      <div class="product-card" data-slug="${p.slug}">
+        <div class="product-gallery">
+          ${fotos.map((url, i) => `
+            <div class="product-gallery-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+              <img src="${url}" alt="${p.nombre}" loading="lazy" onerror="this.style.opacity=0.3">
+            </div>
+          `).join('')}
+          ${fotos.length > 1 ? `
+            <button class="product-gallery-arrow prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+            <button class="product-gallery-arrow next" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+            <div class="product-gallery-nav">
+              ${fotos.map((_, i) => `<button class="product-gallery-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Foto ${i + 1}"></button>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+        <div class="product-info">
+          <h3>${p.nombre}</h3>
+          <p class="product-description">${p.descripcionCorta}</p>
+          <button class="product-toggle-desc" type="button">Ver más detalles</button>
+          <p class="product-description-full">${p.descripcionLarga}</p>
+          <span class="product-price">${p.precio}</span>
+          <a href="${formUrl}" target="_blank" class="product-btn">
+            <i class="fas fa-shopping-cart"></i> Comprar
+          </a>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.product-card').forEach(card => {
+    initProductGallery(card);
+    const btn = card.querySelector('.product-toggle-desc');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+        btn.textContent = card.classList.contains('expanded') ? 'Ver menos' : 'Ver más detalles';
+      });
+    }
+  });
+}
+
+function initProductGallery(card) {
+  const slides = card.querySelectorAll('.product-gallery-slide');
+  const dots = card.querySelectorAll('.product-gallery-dot');
+  const prev = card.querySelector('.product-gallery-arrow.prev');
+  const next = card.querySelector('.product-gallery-arrow.next');
+  let idx = 0;
+
+  if (!slides.length) return;
+
+  function go(i) {
+    if (i < 0) i = slides.length - 1;
+    if (i >= slides.length) i = 0;
+    idx = i;
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('active', k === i));
+  }
+
+  if (prev) prev.addEventListener('click', e => { e.preventDefault(); go(idx - 1); });
+  if (next) next.addEventListener('click', e => { e.preventDefault(); go(idx + 1); });
+  dots.forEach(d => d.addEventListener('click', e => { e.preventDefault(); go(parseInt(d.dataset.index)); }));
+
+  let touchStartX = 0;
+  const gallery = card.querySelector('.product-gallery');
+  if (gallery) {
+    gallery.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    gallery.addEventListener('touchend', e => {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 40) { if (diff < 0) go(idx + 1); else go(idx - 1); }
+    }, { passive: true });
+  }
+}
+
+// ==========================================================
+// PODCAST
+// ==========================================================
+function renderPodcast() {
+  const grid = document.getElementById('podcastGrid');
+  if (!grid || !CONFIG.podcast) return;
+
+  const videos = CONFIG.podcast.videos || [];
+
+  if (!videos.length) {
+    grid.innerHTML = `<div class="podcast-empty">Próximamente nuevos episodios de "${CONFIG.podcast.nombre}".</div>`;
+    return;
+  }
+
+  grid.innerHTML = videos.map(v => `
+    <div class="podcast-item">
+      <iframe
+        src="https://www.youtube.com/embed/${v.id}"
+        title="${v.titulo || 'Episodio'}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+      <div class="podcast-item-info">
+        <h4>${v.titulo || 'Episodio'}</h4>
+        ${v.descripcion ? `<p>${v.descripcion}</p>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ==========================================================
+// VIDEOS CON TABS
+// ==========================================================
+function renderVideos() {
+  const wrapper = document.getElementById('videoEmbedWrapper');
+  const tabs = document.querySelectorAll('.video-tab');
+  if (!wrapper || !tabs.length) return;
+
+  function loadPlaylist(key) {
+    const url = CONFIG.videos[key];
+    if (!url || url === '#') {
+      wrapper.innerHTML = `
+        <div class="video-empty">
+          <i class="fas fa-play-circle"></i>
+          <p>Próximamente nuevos videos en esta categoría. Mientras tanto, visítanos en YouTube.</p>
+          <a href="https://youtube.com/@williarvimusic" target="_blank" class="btn btn-primary">
+            <i class="fab fa-youtube"></i> Ir a YouTube
+          </a>
+        </div>`;
+      return;
+    }
+
+    const match = url.match(/[?&]list=([^&]+)/);
+    const listId = match ? match[1] : url;
+
+    wrapper.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/videoseries?list=${listId}"
+        title="Playlist"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>`;
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      loadPlaylist(tab.dataset.tab);
+    });
+  });
+
+  loadPlaylist(tabs[0].dataset.tab);
+}
