@@ -104,8 +104,38 @@
       </div>
     `;
 
+    // Click en miniaturas
     carouselEl.querySelectorAll('.gallery-thumb').forEach(thumb => {
       thumb.addEventListener('click', () => goToSlide(parseInt(thumb.dataset.index)));
+    });
+
+    // Click en la imagen principal → abrir lightbox con todas las fotos del álbum
+    // Con protección anti-swipe para móvil: si el usuario arrastró, no abrir
+    carouselEl.querySelectorAll('.gallery-slide img').forEach(img => {
+      let touchMoved = false;
+      let startX = 0;
+      let startY = 0;
+
+      img.addEventListener('touchstart', (e) => {
+        touchMoved = false;
+        startX = e.changedTouches[0].screenX;
+        startY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      img.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.changedTouches[0].screenX - startX);
+        const dy = Math.abs(e.changedTouches[0].screenY - startY);
+        if (dx > 10 || dy > 10) touchMoved = true;
+      }, { passive: true });
+
+      img.addEventListener('click', () => {
+        if (touchMoved) {
+          touchMoved = false;
+          return;
+        }
+        const idx = parseInt(img.parentElement.dataset.index);
+        if (window.lightbox) window.lightbox.open(photos, idx);
+      });
     });
   }
 
