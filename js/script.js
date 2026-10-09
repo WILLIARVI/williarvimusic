@@ -7,10 +7,134 @@ function scrollToSection(id) {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// ==========================================================
+// LIGHTBOX - Visor de imágenes a pantalla completa
+// ==========================================================
+window.lightbox = {
+  el: null,
+  img: null,
+  counter: null,
+  images: [],
+  index: 0,
+
+  init() {
+    this.el = document.getElementById('lightbox');
+    this.img = document.getElementById('lightboxImg');
+    this.counter = document.getElementById('lightboxCounter');
+    if (!this.el) return;
+
+    document.getElementById('lightboxClose').addEventListener('click', () => this.close());
+    document.getElementById('lightboxPrev').addEventListener('click', () => this.prev());
+    document.getElementById('lightboxNext').addEventListener('click', () => this.next());
+
+    this.el.addEventListener('click', (e) => {
+      if (e.target === this.el) this.close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!this.el.classList.contains('active')) return;
+      if (e.key === 'Escape') this.close();
+      if (e.key === 'ArrowRight') this.next();
+      if (e.key === 'ArrowLeft') this.prev();
+    });
+
+    let startX = 0;
+    this.el.addEventListener('touchstart', (e) => {
+      startX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    this.el.addEventListener('touchend', (e) => {
+      const diff = e.changedTouches[0].screenX - startX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) this.next(); else this.prev();
+      }
+    }, { passive: true });
+  },
+
+  open(images, index) {
+    if (!this.el || !images || !images.length) return;
+    this.images = images;
+    this.index = index || 0;
+    this.show();
+    this.el.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  },
+
+  show() {
+    if (!this.images.length) return;
+    this.img.src = this.images[this.index];
+    if (this.counter) {
+      this.counter.textContent = this.images.length > 1
+        ? `${this.index + 1} / ${this.images.length}`
+        : '';
+    }
+    const prev = document.getElementById('lightboxPrev');
+    const next = document.getElementById('lightboxNext');
+    if (prev && next) {
+      const single = this.images.length <= 1;
+      prev.style.display = single ? 'none' : 'flex';
+      next.style.display = single ? 'none' : 'flex';
+    }
+  },
+
+  close() {
+    if (!this.el) return;
+    this.el.classList.remove('active');
+    document.body.style.overflow = '';
+  },
+
+  next() {
+    if (this.images.length <= 1) return;
+    this.index = (this.index + 1) % this.images.length;
+    this.show();
+  },
+
+  prev() {
+    if (this.images.length <= 1) return;
+    this.index = (this.index - 1 + this.images.length) % this.images.length;
+    this.show();
+  }
+};
+
+// ==========================================================
+// HELPER: Detectar si el usuario está haciendo swipe (touch)
+// Sirve para no abrir el lightbox cuando el usuario quiere
+// simplemente pasar a la siguiente foto del carrusel.
+// ==========================================================
+function attachSwipeSafeClick(element, handler) {
+  let touchMoved = false;
+  let startX = 0;
+  let startY = 0;
+
+  element.addEventListener('touchstart', (e) => {
+    touchMoved = false;
+    startX = e.changedTouches[0].screenX;
+    startY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  element.addEventListener('touchmove', (e) => {
+    const dx = Math.abs(e.changedTouches[0].screenX - startX);
+    const dy = Math.abs(e.changedTouches[0].screenY - startY);
+    if (dx > 10 || dy > 10) touchMoved = true;
+  }, { passive: true });
+
+  element.addEventListener('click', (e) => {
+    if (touchMoved) {
+      touchMoved = false;
+      return; // Ignorar: fue un swipe, no un tap
+    }
+    handler(e);
+  });
+}
+
+// ==========================================================
+// INICIALIZACIÓN GENERAL
+// ==========================================================
 document.addEventListener('DOMContentLoaded', function () {
+  // Año dinámico del footer
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Toggle de menú móvil
   const navToggle = document.querySelector('.nav-toggle');
   const navMenu = document.querySelector('.nav-menu');
   if (navToggle && navMenu) {
@@ -20,15 +144,44 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Navbar opaco al hacer scroll
   const navbar = document.querySelector('.navbar');
   if (navbar) {
     window.addEventListener('scroll', () => {
       navbar.style.background = window.scrollY > 50
         ? 'rgba(0,0,0,0.98)'
-        : 'rgba(0,0,0,0.9)';
+        : 'rgba(0,0,0,0.88)';
     });
   }
 
+  // Inicializar lightbox
+  window.lightbox.init();
+
+  // Aplicar lightbox a imágenes con clase .zoomable (portada, eventos, QR)
+  document.querySelectorAll('.zoomable').forEach(img => {
+    img.style.cursor = 'zoom-in';
+
+    attachSwipeSafeClick(img, () => {
+      const isQR = img.classList.contains('support-qr');
+      const src = img.src;
+      const section = img.closest('section');
+      let group = [src];
+      let idx = 0;
+
+      if (!isQR && section) {
+        // Todas las imágenes zoomables de la misma sección (excepto QR)
+        const siblings = section.querySelectorAll('.zoomable:not(.support-qr)');
+        if (siblings.length > 1) {
+          group = Array.from(siblings).map(i => i.src);
+          idx = group.indexOf(src);
+          if (idx < 0) idx = 0;
+        }
+      }
+      window.lightbox.open(group, idx);
+    });
+  });
+
+  // Render dinámico
   renderStore();
   renderPodcast();
   renderVideos();
@@ -54,14 +207,14 @@ function renderStore() {
         <div class="product-gallery">
           ${fotos.map((url, i) => `
             <div class="product-gallery-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
-              <img src="${url}" alt="${p.nombre}" loading="lazy" onerror="this.style.opacity=0.3">
+              <img src="${url}" alt="${p.nombre}" loading="lazy">
             </div>
           `).join('')}
           ${fotos.length > 1 ? `
-            <button class="product-gallery-arrow prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
-            <button class="product-gallery-arrow next" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+            <button class="product-gallery-arrow prev" aria-label="Anterior" type="button"><i class="fas fa-chevron-left"></i></button>
+            <button class="product-gallery-arrow next" aria-label="Siguiente" type="button"><i class="fas fa-chevron-right"></i></button>
             <div class="product-gallery-nav">
-              ${fotos.map((_, i) => `<button class="product-gallery-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Foto ${i + 1}"></button>`).join('')}
+              ${fotos.map((_, i) => `<button class="product-gallery-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Foto ${i + 1}" type="button"></button>`).join('')}
             </div>
           ` : ''}
         </div>
@@ -79,6 +232,7 @@ function renderStore() {
     `;
   }).join('');
 
+  // Inicializar cada tarjeta de producto
   grid.querySelectorAll('.product-card').forEach(card => {
     initProductGallery(card);
     const btn = card.querySelector('.product-toggle-desc');
@@ -88,6 +242,20 @@ function renderStore() {
         btn.textContent = card.classList.contains('expanded') ? 'Ver menos' : 'Ver más detalles';
       });
     }
+  });
+
+  // Adjuntar lightbox a las imágenes de productos (con protección anti-swipe)
+  grid.querySelectorAll('.product-gallery-slide img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+
+    attachSwipeSafeClick(img, () => {
+      const card = img.closest('.product-card');
+      if (!card) return;
+      const allImgs = card.querySelectorAll('.product-gallery-slide img');
+      const srcs = Array.from(allImgs).map(i => i.src);
+      const idx = srcs.indexOf(img.src);
+      window.lightbox.open(srcs, idx >= 0 ? idx : 0);
+    });
   });
 }
 
@@ -108,9 +276,9 @@ function initProductGallery(card) {
     dots.forEach((d, k) => d.classList.toggle('active', k === i));
   }
 
-  if (prev) prev.addEventListener('click', e => { e.preventDefault(); go(idx - 1); });
-  if (next) next.addEventListener('click', e => { e.preventDefault(); go(idx + 1); });
-  dots.forEach(d => d.addEventListener('click', e => { e.preventDefault(); go(parseInt(d.dataset.index)); }));
+  if (prev) prev.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); go(idx - 1); });
+  if (next) next.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); go(idx + 1); });
+  dots.forEach(d => d.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); go(parseInt(d.dataset.index)); }));
 
   let touchStartX = 0;
   const gallery = card.querySelector('.product-gallery');
