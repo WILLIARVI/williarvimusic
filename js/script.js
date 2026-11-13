@@ -97,8 +97,6 @@ window.lightbox = {
 
 // ==========================================================
 // HELPER: Detectar si el usuario está haciendo swipe (touch)
-// Sirve para no abrir el lightbox cuando el usuario quiere
-// simplemente pasar a la siguiente foto del carrusel.
 // ==========================================================
 function attachSwipeSafeClick(element, handler) {
   let touchMoved = false;
@@ -120,7 +118,7 @@ function attachSwipeSafeClick(element, handler) {
   element.addEventListener('click', (e) => {
     if (touchMoved) {
       touchMoved = false;
-      return; // Ignorar: fue un swipe, no un tap
+      return;
     }
     handler(e);
   });
@@ -130,11 +128,9 @@ function attachSwipeSafeClick(element, handler) {
 // INICIALIZACIÓN GENERAL
 // ==========================================================
 document.addEventListener('DOMContentLoaded', function () {
-  // Año dinámico del footer
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Toggle de menú móvil
   const navToggle = document.querySelector('.nav-toggle');
   const navMenu = document.querySelector('.nav-menu');
   if (navToggle && navMenu) {
@@ -144,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Navbar opaco al hacer scroll
   const navbar = document.querySelector('.navbar');
   if (navbar) {
     window.addEventListener('scroll', () => {
@@ -154,13 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Inicializar lightbox
   window.lightbox.init();
 
-  // Aplicar lightbox a imágenes con clase .zoomable (portada, eventos, QR)
   document.querySelectorAll('.zoomable').forEach(img => {
     img.style.cursor = 'zoom-in';
-
     attachSwipeSafeClick(img, () => {
       const isQR = img.classList.contains('support-qr');
       const src = img.src;
@@ -169,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
       let idx = 0;
 
       if (!isQR && section) {
-        // Todas las imágenes zoomables de la misma sección (excepto QR)
         const siblings = section.querySelectorAll('.zoomable:not(.support-qr)');
         if (siblings.length > 1) {
           group = Array.from(siblings).map(i => i.src);
@@ -181,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Render dinámico
   renderStore();
   renderPodcast();
   renderVideos();
@@ -232,7 +222,6 @@ function renderStore() {
     `;
   }).join('');
 
-  // Inicializar cada tarjeta de producto
   grid.querySelectorAll('.product-card').forEach(card => {
     initProductGallery(card);
     const btn = card.querySelector('.product-toggle-desc');
@@ -244,10 +233,8 @@ function renderStore() {
     }
   });
 
-  // Adjuntar lightbox a las imágenes de productos (con protección anti-swipe)
   grid.querySelectorAll('.product-gallery-slide img').forEach(img => {
     img.style.cursor = 'zoom-in';
-
     attachSwipeSafeClick(img, () => {
       const card = img.closest('.product-card');
       if (!card) return;
@@ -298,37 +285,72 @@ function renderPodcast() {
   const grid = document.getElementById('podcastGrid');
   if (!grid || !CONFIG.podcast) return;
 
-  const videos = CONFIG.podcast.videos || [];
+  const playlistId = CONFIG.podcast.playlistId;
 
-  if (!videos.length) {
+  if (!playlistId || playlistId === '#') {
     grid.innerHTML = `<div class="podcast-empty">Próximamente nuevos episodios de "${CONFIG.podcast.nombre}".</div>`;
     return;
   }
 
-  grid.innerHTML = videos.map(v => `
+  // Añadimos los parámetros necesarios para evitar el Error 153 y forzar recarga
+  grid.innerHTML = `
     <div class="podcast-item">
       <iframe
-        src="https://www.youtube.com/embed/${v.id}"
-        title="${v.titulo || 'Episodio'}"
+        src="https://www.youtube.com/embed/videoseries?list=${playlistId}&rel=0&origin=${window.location.origin}"
+        title="Lista de reproducción del Podcast"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"
         loading="lazy">
       </iframe>
-      <div class="podcast-item-info">
-        <h4>${v.titulo || 'Episodio'}</h4>
-        ${v.descripcion ? `<p>${v.descripcion}</p>` : ''}
-      </div>
     </div>
-  `).join('');
+  `;
 }
 
 // ==========================================================
-// VIDEOS CON TABS
+// VIDEOS CON TABS (RSS Automático + Playlists)
 // ==========================================================
 function renderVideos() {
   const wrapper = document.getElementById('videoEmbedWrapper');
   const tabs = document.querySelectorAll('.video-tab');
   if (!wrapper || !tabs.length) return;
+
+  async function loadLatestVideo() {
+    wrapper.innerHTML = '<div class="video-empty"><i class="fas fa-spinner fa-spin"></i><p>Cargando el último video...</p></div>';
+    try {
+      const channelId = CONFIG.videos.nuevoVideo;
+      const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+      
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+      
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+      
+      const videoId = xmlDoc.getElementsByTagName("yt:videoId")[0].textContent;
+      
+      wrapper.innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/${videoId}?rel=0&origin=${window.location.origin}"
+          title="Último Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy">
+        </iframe>`;
+    } catch (error) {
+      console.error("Error cargando el video:", error);
+      wrapper.innerHTML = `
+        <div class="video-empty">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>No se pudo cargar el video en este momento. Visítanos directamente en YouTube.</p>
+          <a href="https://youtube.com/@WilliamArizawilliarvi" target="_blank" class="btn btn-primary">
+            <i class="fab fa-youtube"></i> Ir a YouTube
+          </a>
+        </div>`;
+    }
+  }
 
   function loadPlaylist(key) {
     const url = CONFIG.videos[key];
@@ -337,7 +359,7 @@ function renderVideos() {
         <div class="video-empty">
           <i class="fas fa-play-circle"></i>
           <p>Próximamente nuevos videos en esta categoría. Mientras tanto, visítanos en YouTube.</p>
-          <a href="https://youtube.com/@williarvimusic" target="_blank" class="btn btn-primary">
+          <a href="https://youtube.com/@WilliamArizawilliarvi" target="_blank" class="btn btn-primary">
             <i class="fab fa-youtube"></i> Ir a YouTube
           </a>
         </div>`;
@@ -349,10 +371,11 @@ function renderVideos() {
 
     wrapper.innerHTML = `
       <iframe
-        src="https://www.youtube.com/embed/videoseries?list=${listId}"
+        src="https://www.youtube.com/embed/videoseries?list=${listId}&rel=0&origin=${window.location.origin}"
         title="Playlist"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"
         loading="lazy">
       </iframe>`;
   }
@@ -361,9 +384,14 @@ function renderVideos() {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      loadPlaylist(tab.dataset.tab);
+      
+      if (tab.dataset.tab === 'nuevoVideo') {
+        loadLatestVideo();
+      } else {
+        loadPlaylist(tab.dataset.tab);
+      }
     });
   });
 
-  loadPlaylist(tabs[0].dataset.tab);
+  loadLatestVideo();
 }

@@ -19,11 +19,11 @@ const CONFIG = {
   reviewsCSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTJ_ci6_Jm0_tVAS8Q1zN0J2aOEd32C9thH7i_N_IkkyxXZ5SZl9RAdt7r-yJQ8d2UeqNlmoEHL5oul/pub?gid=650806511&single=true&output=csv",
 
   social: {
-    instagram: "https://instagram.com/williarvi",
-    facebook:  "https://facebook.com/williarvimusic",
-    youtube:   "https://youtube.com/@williarvimusic",
-    tiktok:    "https://tiktok.com/@williarvi",
-    spotify:   "#",
+    instagram: "https://www.instagram.com/williarvimusic",
+    facebook:  "https://www.facebook.com/share/1ENDiojW8x/",
+    youtube:   "https://www.youtube.com/@WilliamArizawilliarvi",
+    tiktok:    "https://www.tiktok.com/@williarvimusic",
+    spotify:   "https://open.spotify.com/user/313jhvfipr4zxs7hg3scyebbjkpi",
     appleMusic:"#",
     soundcloud:"#"
   },
@@ -34,11 +34,19 @@ const CONFIG = {
 
   productos: [
     {
-      slug: "libro-pdf",
-      nombre: "Libro PDF - El Eco De Lo Eterno",
-      precio: "$25.000",
-      descripcionCorta: "Versión digital del libro. Léelo al instante en cualquier dispositivo.",
-      descripcionLarga: "La versión digital del libro que te conecta con lo eterno. Léelo desde cualquier dispositivo, al instante. Incluye acceso inmediato tras confirmar el pago.",
+      slug: "workbook",
+      nombre: "Workbook - El Eco De Lo Eterno (PDF)",
+      precio: "¡GRATIS con tu compra!",
+      descripcionCorta: "Tu Bitácora de Reconstrucción y Sanidad Interior. Anexo exclusivo.",
+      descripcionLarga: "Este Workbook no es un libro para leer de corrido. Es una herramienta. Es un taller de reconstrucción. Aquí vamos a hacer visible lo invisible. Te lo llevas completamente GRATIS en formato PDF al adquirir cualquier formato de El Eco de lo Eterno.",
+      fotos: 1
+    },
+    {
+      slug: "libro-epub",
+      nombre: "Libro EPUB - El Eco De Lo Eterno",
+      precio: "$30.000",
+      descripcionCorta: "Versión digital en formato EPUB. Léelo al instante en cualquier dispositivo.",
+      descripcionLarga: "La versión digital del libro que te conecta con lo eterno en formato EPUB. Compatible con e-readers, tablets y celulares. Disfruta de una lectura cómoda y adaptable, con acceso inmediato tras confirmar el pago.",
       fotos: 3
     },
     {
@@ -56,6 +64,14 @@ const CONFIG = {
       descripcionCorta: "Edición premium con pasta de lujo. Un objeto para atesorar.",
       descripcionLarga: "Edición premium de El Eco De Lo Eterno con pasta de lujo. Un objeto para atesorar y exhibir en tu biblioteca. Papel de alta calidad y encuadernación resistente.",
       fotos: 4
+    },
+    {
+      slug: "audiolibro",
+      nombre: "Audiolibro - El Eco De Lo Eterno",
+      precio: "$80.000",
+      descripcionCorta: "Escucha el libro en la voz real de Willi ArVi. Capítulo por capítulo en MP3.",
+      descripcionLarga: "Sumérgete en El Eco de lo Eterno como nunca antes. Esta edición especial ha sido narrada completamente en la voz real de Willi ArVi. Cada capítulo está dividido en pistas individuales en formato MP3, permitiéndote pausar, avanzar y volver a escuchar exactamente el tema que necesitas en el momento preciso. Una experiencia de acompañamiento íntimo, diseñada para que escuches mientras viajas, descansas o buscas un momento de reflexión. Disponible también en Audible/ACX, Google Play y Spotify.",
+      fotos: 3
     },
     {
       slug: "camiseta",
@@ -118,18 +134,18 @@ const CONFIG = {
   podcast: {
     nombre: "El Eco De Lo Eterno",
     descripcion: "Conversaciones sobre música, arte y la vida detrás de cada canción.",
-    videos: []
+    playlistId: "PLNTETHdzvRRU" // ID de la playlist del podcast
   },
 
   videos: {
-    nuevaCancion:  "#",
-    conciertos:    "#",
-    conferencias:  "#",
-    backstage:     "#"
+    nuevoVideo: "UCY4zaZeDafBvcma5zXmQFTA", // Channel ID de Willi ArVi
+    conciertos: "PLSRU7xGfEBVvUiw4nUm6yu6t6CF8Z0zFp", 
+    conferencias: "PLNTETHdzvRRU", 
+    backstage: "PLbQ93LwKnA8I" 
   },
 
   apoyos: {
-    paypal:    "#",
+    paypal:    "https://www.paypal.com/donate/?business=williarvimusic@gmail.com",
     nuQR:      "assets/qr/nu.png",
     paypalQR:  "assets/qr/paypal.png"
   }
