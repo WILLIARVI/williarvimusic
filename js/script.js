@@ -292,7 +292,6 @@ function renderPodcast() {
     return;
   }
 
-  // Añadimos los parámetros necesarios para evitar el Error 153 y forzar recarga
   grid.innerHTML = `
     <div class="podcast-item">
       <iframe
@@ -320,15 +319,21 @@ function renderVideos() {
     try {
       const channelId = CONFIG.videos.nuevoVideo;
       const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+      
+      // Proxy más estable para evitar fallos de conexión
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
       
       const response = await fetch(proxyUrl);
-      const data = await response.json();
+      if (!response.ok) throw new Error("Error de red en el proxy");
       
+      const xmlText = await response.text();
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
       
-      const videoId = xmlDoc.getElementsByTagName("yt:videoId")[0].textContent;
+      const videoIdElement = xmlDoc.getElementsByTagName("yt:videoId")[0];
+      if (!videoIdElement) throw new Error("No se encontró el video en el feed");
+      
+      const videoId = videoIdElement.textContent;
       
       wrapper.innerHTML = `
         <iframe
@@ -344,9 +349,9 @@ function renderVideos() {
       wrapper.innerHTML = `
         <div class="video-empty">
           <i class="fas fa-exclamation-triangle"></i>
-          <p>No se pudo cargar el video en este momento. Visítanos directamente en YouTube.</p>
+          <p>No se pudo cargar el video automáticamente en este momento.</p>
           <a href="https://youtube.com/@WilliamArizawilliarvi" target="_blank" class="btn btn-primary">
-            <i class="fab fa-youtube"></i> Ir a YouTube
+            <i class="fab fa-youtube"></i> Ver el canal en YouTube
           </a>
         </div>`;
     }
